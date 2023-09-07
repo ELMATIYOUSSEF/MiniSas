@@ -1,13 +1,15 @@
-package Model;
-
-import Intefaces.LibraryBeneficiaries;
+package model;
 
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import database.database;
 
-public abstract class Beneficiaries extends Person implements LibraryBeneficiaries {
+import static database.database.connect;
+
+public class Beneficiaries extends Person {
     private String phone;
 
 
@@ -24,18 +26,7 @@ public abstract class Beneficiaries extends Person implements LibraryBeneficiari
         this.phone = phone;
     }
 
-    @Override
-    public void register(){
 
-    }
-    @Override
-    public void returnBook(){
-
-    }
-    @Override
-    public void borrowBook(){
-
-    }
     public boolean createBeneficiary(Beneficiaries beneficiary) {
         try  {
             String sql = "INSERT INTO Beneficiaires (name, num_phone) VALUES (?, ?)";
@@ -50,4 +41,30 @@ public abstract class Beneficiaries extends Person implements LibraryBeneficiari
             return false;
         }
     }
+
+    public static void showAllBeneficiaries() {
+        try {
+            String sql = "SELECT * FROM beneficiaires";
+            PreparedStatement preparedStatement = connect().prepareStatement(sql);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            System.out.println("List of Beneficiaries:");
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String phone = resultSet.getString("num_phone");
+
+                System.out.println("ID: " + id + ", Name: " + name + ", Phone: " + phone);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            database.disconnect();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

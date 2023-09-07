@@ -37,3 +37,34 @@ CREATE TABLE Emprunter (
                            FOREIGN KEY (id_Bib) REFERENCES Bibliothecaires(id),
                            FOREIGN KEY (id_Ben) REFERENCES Beneficiaires(id)
 );
+
+DELIMITER //
+
+CREATE TRIGGER after_change_book_quantity
+    AFTER UPDATE ON livre FOR EACH ROW
+BEGIN
+    IF NEW.quantite > OLD.quantite THEN
+    UPDATE emprunter
+    SET status = 'returned'
+    WHERE ISBN_emp = NEW.ISBN;
+END IF;
+END;
+
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE EVENT check_return_status
+ON SCHEDULE EVERY 1 DAY
+DO
+BEGIN
+    -- Set the status to 'Perdu' for books where the return date has passed
+UPDATE emprunter
+SET status = 'Perdu'
+WHERE status = 'borrowed' AND date_retour < NOW();
+END;
+//
+
+DELIMITER ;

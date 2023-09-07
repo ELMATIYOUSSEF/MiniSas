@@ -1,9 +1,12 @@
 package console;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
+import static console.BookManagement.menuBook;
+
 public class Menu {
-    public static void menu(){
+    public static void menu() throws SQLException {
 
     Scanner scanner = new Scanner(System.in);
     int choice;
@@ -27,7 +30,7 @@ public class Menu {
 
         switch (choice) {
             case 1:
-                clearScreen();
+                menuBook();
                 break;
             case 2:
                 System.out.print("\u000C");

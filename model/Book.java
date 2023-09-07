@@ -1,20 +1,29 @@
-package Model;
+package model;
 
-import Intefaces.LibraryBooks;
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class Book implements LibraryBooks {
+public  class Book {
     private int ISBN ;
     private String title ;
     private  String author;
     private int Quantity ;
     private String status ;
 
-    public Book (int ISBN , String title , String author , int Quantity ){
+    public static int IDbib ;
+    public static String NameBib ;
+
+   public static List<Book> listBook = new ArrayList<>();
+
+    public Book (int ISBN , String title , String author , int Quantity ,String status){
         this.ISBN = ISBN ;
         this.author = author ;
         this.title = title;
         this.Quantity = Quantity ;
-        this.status = "available";
+        this.status = status;
+    }
+    public void ShowBook(){
+        System.out.println("isbn is  = "+ ISBN  + " \n author is  = " +author + " \ntitle = "+title + "\nQuantity of this book is = "+Quantity);
     }
 
     public int getISBN() {
@@ -57,20 +66,8 @@ public abstract class Book implements LibraryBooks {
         this.status = status;
     }
 
-    @Override
-    public void returnBook(){
-        Quantity++;
-        status = "available";
-        System.out.println(ISBN+"Book Title :"+ title +"has ben returned");
-    }
-    @Override
-    public void checkout(){
-        if(Quantity>0){
-            Quantity--;
-            status ="checked Out" ;
-            System.out.println(ISBN+"Book Title :"+ title +"has ben checked Out");
-        }else{
-            System.out.println(ISBN+"Book Title :"+ title +"is Not available for checkout .");
-        }
-    }
+
+
+
+
 }
