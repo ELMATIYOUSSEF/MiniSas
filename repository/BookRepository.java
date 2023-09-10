@@ -56,7 +56,7 @@ public class BookRepository implements crud {
             while (resultSet.next()) {
                 int ISBN = resultSet.getInt("ISBN");
                 String title = resultSet.getString("titre");
-                String author = resultSet.getString("autheur");
+                String author = resultSet.getString("auteur");
                 int quantity = resultSet.getInt("quantite");
                 String status = resultSet.getString("status");
 
@@ -77,7 +77,7 @@ public class BookRepository implements crud {
 
     public Book update(Book book) {
         try {
-            String sql = "UPDATE livre SET titre = ?, autheur = ? , quantite = ? ,status = ? WHERE id = ?";
+            String sql = "UPDATE livre SET titre = ?, auteur = ? , quantite = ? ,status = ? WHERE ISBN = ?";
             PreparedStatement preparedStatement = database.connect().prepareStatement(sql);
 
             preparedStatement.setString(1, book.getTitle());
@@ -144,7 +144,7 @@ public class BookRepository implements crud {
     public List<Book> searchBooks(String searchCriteria) {
         List<Book> searchResults = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM livre WHERE titre LIKE ? OR autheur LIKE ?";
+            String sql = "SELECT * FROM livre WHERE titre LIKE ? OR auteur LIKE ?";
             PreparedStatement preparedStatement = database.connect().prepareStatement(sql);
 
             preparedStatement.setString(1, "%" + searchCriteria + "%");
@@ -155,7 +155,7 @@ public class BookRepository implements crud {
             while (resultSet.next()) {
                 int ISBN = resultSet.getInt("ISBN");
                 String title = resultSet.getString("titre");
-                String author = resultSet.getString("autheur");
+                String author = resultSet.getString("auteur");
                 int quantity = resultSet.getInt("quantite");
                 String status = resultSet.getString("status");
 

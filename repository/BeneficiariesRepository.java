@@ -6,6 +6,8 @@ import database.database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static database.database.connect;
 
@@ -28,28 +30,27 @@ public class BeneficiariesRepository {
         return null;
     }
 
-    public void showAllBeneficiaries() {
+    Beneficiaries ben ;
+    public List<Beneficiaries> showAllBeneficiaries() {
+        List<Beneficiaries> benList = new ArrayList<>();
         try {
             String sql = "SELECT * FROM beneficiaires";
             PreparedStatement preparedStatement = connect().prepareStatement(sql);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            System.out.println("List of Beneficiaries:");
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String phone = resultSet.getString("num_phone");
-
-                System.out.println("ID: " + id + ", Name: " + name + ", Phone: " + phone);
+                ben = new Beneficiaries(name,phone);
+                benList.add(ben);
             }
-
             resultSet.close();
             preparedStatement.close();
             database.disconnect();
         }catch (SQLException e) {
             e.printStackTrace();
         }
+        return benList;
     }
 
 }

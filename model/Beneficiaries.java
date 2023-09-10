@@ -13,10 +13,11 @@ public class Beneficiaries extends Person {
     private String phone;
 
 
-    public Beneficiaries(int id , String name , String phone){
-        super(id,name);
+    public Beneficiaries( String name , String phone){
+        super(name);
         this.phone = phone;
     }
+
 
     public String getPhone() {
         return phone;

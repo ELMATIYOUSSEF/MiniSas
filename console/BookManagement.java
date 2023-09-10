@@ -5,8 +5,7 @@ import controller.BookController;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import static console.Menu.clearScreen;
-import static console.Menu.printHeader;
+import static console.Menu.*;
 
 public class BookManagement {
     public static void menuBook() throws SQLException {
@@ -36,29 +35,28 @@ public class BookManagement {
                     bookController.addBook();
                     break;
                 case 2:
-                    System.out.print("\u000C");
+                   bookController.showAll();
                     break;
                 case 3:
                     bookController.showBook();
                     break;
                 case 4:
-
+                    bookController.searchBooks();
                     break;
                 case 5:
-
+                    bookController.deleteBook();
                     break;
                 case 6:
-
+                    bookController.update();
                     break;
                 case 7:
 
                     try {
-                        //function GOODBY
-                        Thread.sleep(2000); // Sleep for 2 seconds
+                        Thread.sleep(2000);
+                        menu();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    System.exit(0);
                     break;
                 default:
                     System.out.print("\u001B[31m");

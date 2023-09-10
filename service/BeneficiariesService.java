@@ -4,6 +4,8 @@ import model.Beneficiaries;
 import repository.BeneficiariesRepository;
 import repository.BibliothecaireRepository;
 
+import java.util.List;
+
 
 public class BeneficiariesService {
     private final BeneficiariesRepository BenRepository ;
@@ -14,7 +16,7 @@ public class BeneficiariesService {
     public Beneficiaries createBeneficiaryService(Beneficiaries beneficiary) {
         return BenRepository.createBeneficiary(beneficiary);
     }
-    public void showAllBeneficiariesService(){
-       BenRepository.showAllBeneficiaries();
+    public List<Beneficiaries> showAllBeneficiariesService(){
+      return BenRepository.showAllBeneficiaries();
     }
 }

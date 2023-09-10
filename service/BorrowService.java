@@ -6,6 +6,8 @@ import repository.BorrowRepository;
 import java.util.Calendar;
 import java.util.Date;
 
+import static repository.BorrowRepository.borrowBook;
+
 public class BorrowService {
 
     private final BorrowRepository borrowRepository ;
@@ -13,17 +15,19 @@ public class BorrowService {
     public BorrowService() {
         this.borrowRepository = new BorrowRepository();
     }
-    public boolean borrowBookService(Book book, int idBib, int idBen , String msg){
-        if ("available".equals(book.getStatus())) {
+    public static boolean borrowBookService(Book book, int idBib, int idBen){
+        if ("disponible".equals(book.getStatus())) {
             book.setStatus("borrowed");
 
             Date currentDate = new Date();
-
+            String msg = "Book borrowed successfully.";
             Date returnDate = calculateReturnDate(currentDate);
-            return borrowRepository.borrowBook(book,idBib,idBen,msg ,returnDate, currentDate);
+            return borrowBook(book,idBib,idBen,msg ,returnDate, currentDate);
         }
      else {
-        System.out.println("Book is not available.");
+            System.out.println("\u001B[31m]");
+            System.out.println("Book is not available.");
+            System.out.println("\u001B[0m]");
     }
 return false;
     }

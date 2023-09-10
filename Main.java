@@ -16,10 +16,9 @@ public class Main {
         database.connect();
         int  count=1;
 
-        while (checkLogin()==false){
+        while (!checkLogin()){
             count++;
             if (count ==3){
-                System.out.println( "tamounit " +count);
                 System.exit(0);
             }
             checkLogin();

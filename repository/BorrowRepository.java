@@ -13,7 +13,7 @@ public class BorrowRepository {
     public BorrowRepository() {
     }
 
-    public boolean borrowBook(Book book, int idBib, int idBen , String msg , Date returnDate ,Date currentDate ) {
+    public static boolean borrowBook(Book book, int idBib, int idBen , String msg , Date returnDate ,Date currentDate ) {
         try {
 
                 String insertSql = "INSERT INTO emprunter (date_retour, date_demprunt, status, ISBN_emp, id_Bib, id_Ben) VALUES (?, ?, ?, ?, ?, ?)";
@@ -28,10 +28,14 @@ public class BorrowRepository {
                 int rowsInserted = preparedStatement.executeUpdate();
 
                 if (rowsInserted > 0) {
+                    System.out.println("\u001B[34m]");
                     System.out.println(msg);
+                    System.out.println("\u001B[0m]");
                     return true;
                 } else {
+                    System.out.println("\u001B[31]");
                     System.out.println("failed !!");
+                    System.out.println("\u001B[0m]");
                 }
 
         } catch (SQLException e) {

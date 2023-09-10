@@ -39,19 +39,20 @@ CREATE TABLE Emprunter (
 );
 
 DELIMITER //
-
-CREATE TRIGGER after_change_book_quantity
-    AFTER UPDATE ON livre FOR EACH ROW
+CREATE TRIGGER after_emprunter_update
+    AFTER UPDATE ON emprunter
+    FOR EACH ROW
 BEGIN
-    IF NEW.quantite > OLD.quantite THEN
-    UPDATE emprunter
-    SET status = 'returned'
-    WHERE ISBN_emp = NEW.ISBN;
+    -- Check if the 'status' column has been updated to 'returned'
+    IF NEW.status = 'returned' THEN
+        -- Insert the book information into the Bookreturned table
+        INSERT INTO Bookreturned (date_retour, date_demprunt, status, ISBN_emp, id_Bib, id_Ben)
+        VALUES (NOW(), NEW.date_demprunt, NEW.status, NEW.ISBN_emp, NEW.id_Bib, NEW.id_Ben);
+        -- Delete the book from the emprunter table
+    DELETE FROM emprunter WHERE ISBN_emp = NEW.ISBN_emp AND id_Ben = NEW.id_Ben;
 END IF;
 END;
-
 //
-
 DELIMITER ;
 
 DELIMITER //

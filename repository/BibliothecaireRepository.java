@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import static model.Book.IDbib;
 import static model.Book.NameBib;
 import static database.database.connect;
+import static service.BorrowService.borrowBookService;
 
 public class BibliothecaireRepository {
     public static boolean login(String email, String password) {
@@ -39,14 +40,21 @@ public class BibliothecaireRepository {
 
     public void returnBook(int ISBN , int IdBen){
         try {
-            String sql = "SELECT * FROM emprunter WHERE ISBN_emp = ? and status = borrowed and id_Ben = ?";
-            Book book = getBookInfo(ISBN, sql ,IdBen);
-            int availableQuantity = book.getQuantity()+1;
-            book.setQuantity(availableQuantity);
-            //changeQuantity
-            changeBookQuantity(book);
-            changeBookStatusToReturned(book) ;
-            System.out.println(ISBN + "Book Title :" + book.getTitle() + "has ben returned");
+            String sql = "SELECT * FROM livre WHERE ISBN = ? ";
+            Book book = getBookInfo(ISBN, sql ,0);
+            if (book != null){
+                int availableQuantity = book.getQuantity();
+                book.setQuantity(availableQuantity+1);
+                //changeQuantity
+                changeBookQuantity(book);
+                changeBookStatusToReturned(book,IdBen) ;
+            }else {
+                System.out.println("\u001B[31m");
+                System.out.println(" is not available for returned.");
+                System.out.println("\u001B[0m");
+            }
+
+
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -59,26 +67,37 @@ public class BibliothecaireRepository {
             if (book != null) {
                 int availableQuantity = book.getQuantity()-1;
                 book.setQuantity(availableQuantity);
-
                 if (availableQuantity > 0) {
-                    String borrowStatusQuery = "SELECT * FROM emprunter WHERE ISBN_emp = ? AND status = 'borrowed'";
-                    if (!isBookBorrowed(ISBN, borrowStatusQuery)) {
 
-                        changeBookQuantity(book);
-
-                        // Change status and record the borrowing
-                        String msg = "Book borrowed successfully.";
-                        changeBookStatusAndBorrow(book, IdBen, msg);
-
-                        System.out.println(ISBN + " Book Title: " + book.getTitle() + " has been checked out");
-                    } else {
-                        System.out.println(ISBN + " Book Title: " + book.getTitle() + " is already borrowed.");
-                    }
                 } else {
                     System.out.println(ISBN + " Book Title: " + book.getTitle() + " is not available for checkout.");
                 }
+
+                if (availableQuantity > 0) {
+
+                        String borrowStatusQuery = "SELECT * FROM emprunter WHERE  status = 'borrowed' AND id_Ben = ?";
+                        if (!isBookBorrowed(borrowStatusQuery ,IdBen)) {
+                            //Change Book Quantity
+                            changeBookQuantity(book);
+
+                            // Change status and record the borrowing
+                            borrowBookService(book, IDbib, IdBen);
+
+                    }else {
+                        System.out.println("\u001B[31m");
+                        System.out.println(" This Beneficiary is already borrowed Book.");
+                        System.out.println("\u001B[0m");
+                    }
+
+                } else {
+                    System.out.println("\u001B[31m");
+                    System.out.println(ISBN + " Book Title: " + book.getTitle() + " is not available for checkout.");
+                    System.out.println("\u001B[0m");
+                }
             } else {
+                System.out.println("\u001B[31m");
                 System.out.println(ISBN + " Book not found.");
+                System.out.println("\u001B[0m");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -94,10 +113,10 @@ public class BibliothecaireRepository {
 
             int rowsUpdated = preparedStatement.executeUpdate();
 
-            if (rowsUpdated > 0) {
-                System.out.println("Quantity Changed successfully.");
-            } else {
+            if ( rowsUpdated == 0) {
+                System.out.println("\u001B[31m");
                 System.out.println(" failed.. !!");
+                System.out.println("\u001B[0m");
             }
 
             preparedStatement.close();
@@ -106,6 +125,21 @@ public class BibliothecaireRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private boolean isBookBorrowed( String query , int Idbin) throws SQLException {
+        boolean isBorrowed = false;
+
+        try (PreparedStatement preparedStatement = connect().prepareStatement(query)) {
+            preparedStatement.setInt(1, Idbin);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    isBorrowed = true;
+                }
+            }
+        }
+
+        return isBorrowed;
     }
 
     public static Book getBookInfo(int ISBN, String query , int Idben) throws SQLException {
@@ -121,7 +155,8 @@ public class BibliothecaireRepository {
             }
 
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            try{
+                ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     String title = resultSet.getString("titre");
                     String auteur = resultSet.getString("auteur");
@@ -130,61 +165,33 @@ public class BibliothecaireRepository {
 
                     book = new Book(ISBN, title,auteur, quantity, status);
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
 
         return book;
     }
 
-    private boolean isBookBorrowed(int ISBN, String query) throws SQLException {
-        boolean isBorrowed = false;
 
-        try (PreparedStatement preparedStatement = connect().prepareStatement(query)) {
-            preparedStatement.setInt(1, ISBN);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    isBorrowed = true;
-                }
-            }
-        }
-
-        return isBorrowed;
-    }
-
-
-    private void changeBookStatusAndBorrow(Book book, int IdBen, String msg) throws SQLException {
-        String insertQuery = "INSERT INTO emprunter (ISBN_emp, id_Ben, status, borrow_date) VALUES (?, ?, 'borrowed', ?)";
-
-        try (PreparedStatement preparedStatement = connect().prepareStatement(insertQuery) ) {
-            preparedStatement.setInt(1, book.getISBN());
-            preparedStatement.setInt(2, IdBen);
-            preparedStatement.setDate(3, new Date(System.currentTimeMillis())); // Assuming you record the borrowing date
-
-            int rowsInserted = preparedStatement.executeUpdate();
-
-            if (rowsInserted > 0) {
-                System.out.println(msg);
-            } else {
-                System.out.println("Failed to record borrowing.");
-            }
-        }
-    }
-
-    // I didn't use because I have created Trigger which performs the same function
-    public void changeBookStatusToReturned(Book book) {
+    public void changeBookStatusToReturned(Book book , int Idben) {
         try {
-            String updateQuery = "UPDATE emprunter SET status = 'returned' WHERE ISBN_emp = ?";
+            String updateQuery = "UPDATE emprunter SET status = 'returned' WHERE ISBN_emp = ? AND id_Ben = ?";
 
             try (PreparedStatement preparedStatement = connect().prepareStatement(updateQuery)) {
                 preparedStatement.setInt(1, book.getISBN());
+                preparedStatement.setInt(2, Idben);
 
                 int rowsUpdated = preparedStatement.executeUpdate();
 
                 if (rowsUpdated > 0) {
+                    System.out.println("\u001B[34m");
                     System.out.println("Book status changed to 'returned' successfully.");
+                    System.out.println("\u001B[0m");
                 } else {
+                    System.out.println("\u001B[31m");
                     System.out.println("No book with the specified ISBN_emp found.");
+                    System.out.println("\u001B[0m");
                 }
             }
         } catch (SQLException e) {

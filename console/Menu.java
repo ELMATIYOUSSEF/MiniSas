@@ -1,13 +1,16 @@
 package console;
 
+import controller.BibliothecaireController;
+
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import static console.BeneficiariesManagement.menuBeneficiaries;
 import static console.BookManagement.menuBook;
 
 public class Menu {
     public static void menu() throws SQLException {
-
+        BibliothecaireController bibliothecaireController = new BibliothecaireController();
     Scanner scanner = new Scanner(System.in);
     int choice;
 
@@ -33,13 +36,13 @@ public class Menu {
                 menuBook();
                 break;
             case 2:
-                System.out.print("\u000C");
+                menuBeneficiaries();
                 break;
             case 3:
-
+                bibliothecaireController.checkoutBook();
                 break;
             case 4:
-
+                bibliothecaireController.returnBookService();
                 break;
             case 5:
 
