@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
 import static console.BookManagement.menuBook;
 import static repository.BibliothecaireRepository.getBookInfo;
@@ -19,20 +20,27 @@ public class BookController {
     BookService bookService = new BookService();
     List<Book> books;
     Book book ;
+    int ISBN ;
+    int quantity ;
     public  void addBook(){
 
         Scanner myObj = new Scanner(System.in);
         System.out.print("\u001B[32m");
         System.out.println("<=============== Add book ===============> \n");
         System.out.println("Enter ISBN:");
-        int ISBN = myObj.nextInt();
+        if (myObj.hasNextInt()) {
+            ISBN = myObj.nextInt();
+        }else System.out.println("Entre un  No character !! ");
         myObj.nextLine();
         System.out.println("Enter Title:");
         String title = myObj.nextLine();
         System.out.println("Enter Author:");
         String author = myObj.nextLine();
         System.out.println("Enter Quantity:");
-        int quantity = myObj.nextInt();
+        if (myObj.hasNextInt()) {
+             quantity = myObj.nextInt();
+        }else System.out.println("Entre Just les Numbers No character !! ");
+
         String status = "disponible";
         System.out.print("\u001B[0m");
 
@@ -57,6 +65,7 @@ public class BookController {
         books =bookService.getAll() ;
         HeaderTable();
         for (Book book1 : books) {
+
             displayBookInfoInTable(book1);
         }
 
@@ -141,12 +150,10 @@ public class BookController {
         if (Quantite!=0) {
             book1.setQuantity(Quantite);
         }
-        myObj.next() ;
         System.out.println("Status :");
         System.out.println("1 : disponible ");
         System.out.println("2 : emprunte ");
         int reponse = myObj.nextInt();
-        myObj.next();
         if (reponse != 0 && reponse < 3 ) {
             if (reponse == 1){
                 book1.setStatus("disponible");

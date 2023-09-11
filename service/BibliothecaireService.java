@@ -29,4 +29,7 @@ public class BibliothecaireService {
     public void changeBookQuantityService(Book book ) throws SQLException {
         changeBookQuantity( book ) ;
     }
+    public Bibliothecaire getBib(int bib){
+        return BibRepository.getBib(bib);
+    }
 }

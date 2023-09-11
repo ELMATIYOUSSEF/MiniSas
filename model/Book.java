@@ -12,6 +12,7 @@ public  class Book {
 
     public static int IDbib ;
     public static String NameBib ;
+    public static String Email ;
 
    public static List<Book> listBook = new ArrayList<>();
 

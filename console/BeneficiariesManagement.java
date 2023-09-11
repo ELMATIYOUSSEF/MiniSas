@@ -12,7 +12,7 @@ public class BeneficiariesManagement {
 
         Scanner scanner = new Scanner(System.in);
         BeneficiariesController beneficiariesController = new BeneficiariesController();
-        int choice;
+        int choice = 0;
 
 
         do {
@@ -24,28 +24,44 @@ public class BeneficiariesManagement {
             System.out.println("\t02 : affiché tout les Beneficiaries");
             System.out.println("\t03 : Retournez à la page d'accueil .");
             System.out.print("\nVotre choix : ");
-            choice = scanner.nextInt();
+            while (!scanner.hasNextInt()) {
+                scanner.nextLine();
+                System.out.print("\u001B[31m");
+                System.out.println("\n Choix invalide. Veuillez réessayer.");
+                System.out.print("\u001B[32m");
+                System.out.print("\nVotre choix : ");
+            }
 
-            switch (choice) {
-                case 1:
-                    beneficiariesController.addBeneficiaries();
-                    break;
-                case 2:
-                    beneficiariesController.showAll();
-                    break;
-                case 3:
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
 
-                    try {
-                        Thread.sleep(2000);
-                        menu();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default:
-                    System.out.print("\u001B[31m");
-                    System.out.println("\n Choix invalide. Veuillez réessayer.");
-                    System.out.print("\u001B[0m");
+                switch (choice) {
+                    case 1:
+                        beneficiariesController.addBeneficiaries();
+                        break;
+                    case 2:
+                        beneficiariesController.showAll();
+                        break;
+                    case 3:
+
+                        try {
+                            Thread.sleep(2000);
+                            menu();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    default:
+                        System.out.print("\u001B[31m");
+                        System.out.println("\n Choix invalide. Veuillez réessayer.");
+                        System.out.print("\u001B[0m");
+                }
+            }else {
+                // Clear the invalid input
+                scanner.nextLine();
+                System.out.print("\u001B[31m");
+                System.out.println("\n Choix invalide. Veuillez réessayer.");
+                System.out.print("\u001B[0m");
             }
 
         } while( choice != 3);

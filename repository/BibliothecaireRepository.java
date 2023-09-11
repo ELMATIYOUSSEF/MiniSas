@@ -1,5 +1,7 @@
 package repository;
 
+import model.Beneficiaries;
+import model.Bibliothecaire;
 import model.Book;
 import database.database;
 
@@ -10,10 +12,12 @@ import java.sql.SQLException;
 
 import static model.Book.IDbib;
 import static model.Book.NameBib;
+import static model.Book.Email;
 import static database.database.connect;
 import static service.BorrowService.borrowBookService;
 
 public class BibliothecaireRepository {
+    Bibliothecaire bib ;
     public static boolean login(String email, String password) {
         try {
             String sql = "SELECT id, name FROM Bibliothecaires WHERE email = ? AND PASS_WORD = ?";
@@ -26,6 +30,7 @@ public class BibliothecaireRepository {
             if (resultSet.next()) {
                 IDbib = resultSet.getInt("id");
                 NameBib = resultSet.getString("name");
+                Email = email ;
                 return true; // User with matching email and password found
             } else {
                 return false; // User not found
@@ -197,6 +202,28 @@ public class BibliothecaireRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public Bibliothecaire getBib(int id){
+        try {
+            String sql = "SELECT * FROM bibliothecaires where id = ?";
+            PreparedStatement preparedStatement = connect().prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int idBib  = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                bib = new Bibliothecaire(idBib,name,email);
+                return bib ;
+            }
+            resultSet.close();
+            preparedStatement.close();
+            database.disconnect();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bib ;
     }
 
 

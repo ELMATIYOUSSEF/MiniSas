@@ -52,5 +52,26 @@ public class BeneficiariesRepository {
         }
         return benList;
     }
+    public  Beneficiaries getBen(int id){
+        try {
+            String sql = "SELECT * FROM beneficiaires where id = ?";
+            PreparedStatement preparedStatement = connect().prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String phone = resultSet.getString("num_phone");
+                ben = new Beneficiaries(name,phone);
+                return ben ;
+            }
+            resultSet.close();
+            preparedStatement.close();
+            database.disconnect();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ben ;
+    }
 
 }

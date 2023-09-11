@@ -1,16 +1,25 @@
 package service;
 
 import model.Book;
+import model.Borrow;
 import repository.BorrowRepository;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static repository.BorrowRepository.borrowBook;
 
 public class BorrowService {
 
     private final BorrowRepository borrowRepository ;
+
+    public List<Borrow> getALL(){
+        return borrowRepository.getAllBorrowedBooks();
+    }
+    public List<Book> getAllBookDisponible(){
+        return borrowRepository.getAllDisponibleBooks();
+    }
 
     public BorrowService() {
         this.borrowRepository = new BorrowRepository();
@@ -25,9 +34,9 @@ public class BorrowService {
             return borrowBook(book,idBib,idBen,msg ,returnDate, currentDate);
         }
      else {
-            System.out.println("\u001B[31m]");
-            System.out.println("Book is not available.");
-            System.out.println("\u001B[0m]");
+            System.out.println("\u001B[31m");
+            System.out.println("Book Or This Beneficiare  is not available.");
+            System.out.println("\u001B[0m");
     }
 return false;
     }

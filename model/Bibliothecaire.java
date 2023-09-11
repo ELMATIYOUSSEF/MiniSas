@@ -11,6 +11,10 @@ public class Bibliothecaire extends Person {
         this.email = Email ;
         this.password = password ;
     }
+    public Bibliothecaire(int id,String name, String Email ){
+        super(id, name );
+        this.email = Email ;
+    }
 
     public String getEmail() {
         return email;
@@ -27,7 +31,6 @@ public class Bibliothecaire extends Person {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
 
 }

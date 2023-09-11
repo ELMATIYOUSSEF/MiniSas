@@ -19,4 +19,8 @@ public class BeneficiariesService {
     public List<Beneficiaries> showAllBeneficiariesService(){
       return BenRepository.showAllBeneficiaries();
     }
+
+    public  Beneficiaries getBenRepository(int id) {
+        return BenRepository.getBen(id);
+    }
 }
