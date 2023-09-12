@@ -1,6 +1,6 @@
 package repository;
 
-import model.Beneficiaries;
+import static console.TextColor.*;
 import model.Bibliothecaire;
 import model.Book;
 import database.database;
@@ -54,9 +54,9 @@ public class BibliothecaireRepository {
                 changeBookQuantity(book);
                 changeBookStatusToReturned(book,IdBen) ;
             }else {
-                System.out.println("\u001B[31m");
+                System.out.println(RED);
                 System.out.println(" is not available for returned.");
-                System.out.println("\u001B[0m");
+                System.out.println(RESET);
             }
 
 
@@ -89,20 +89,20 @@ public class BibliothecaireRepository {
                             borrowBookService(book, IDbib, IdBen);
 
                     }else {
-                        System.out.println("\u001B[31m");
+                        System.out.println(RED);
                         System.out.println(" This Beneficiary is already borrowed Book.");
-                        System.out.println("\u001B[0m");
+                        System.out.println(RESET);
                     }
 
                 } else {
-                    System.out.println("\u001B[31m");
+                    System.out.println(RED);
                     System.out.println(ISBN + " Book Title: " + book.getTitle() + " is not available for checkout.");
-                    System.out.println("\u001B[0m");
+                    System.out.println(RESET);
                 }
             } else {
-                System.out.println("\u001B[31m");
+                System.out.println(RED);
                 System.out.println(ISBN + " Book not found.");
-                System.out.println("\u001B[0m");
+                System.out.println(RESET);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,9 +119,9 @@ public class BibliothecaireRepository {
             int rowsUpdated = preparedStatement.executeUpdate();
 
             if ( rowsUpdated == 0) {
-                System.out.println("\u001B[31m");
+                System.out.println(RED);
                 System.out.println(" failed.. !!");
-                System.out.println("\u001B[0m");
+                System.out.println(RESET);
             }
 
             preparedStatement.close();
@@ -190,13 +190,13 @@ public class BibliothecaireRepository {
                 int rowsUpdated = preparedStatement.executeUpdate();
 
                 if (rowsUpdated > 0) {
-                    System.out.println("\u001B[34m");
+                    System.out.println(BLEU);
                     System.out.println("Book status changed to 'returned' successfully.");
-                    System.out.println("\u001B[0m");
+                    System.out.println();
                 } else {
-                    System.out.println("\u001B[31m");
+                    System.out.println(RED);
                     System.out.println("No book with the specified ISBN_emp found.");
-                    System.out.println("\u001B[0m");
+                    System.out.println(RESET);
                 }
             }
         } catch (SQLException e) {

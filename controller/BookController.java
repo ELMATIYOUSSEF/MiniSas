@@ -13,6 +13,7 @@ import java.util.Scanner;
 import java.util.Stack;
 
 import static console.BookManagement.menuBook;
+import static console.TextColor.*;
 import static repository.BibliothecaireRepository.getBookInfo;
 import static repository.BibliothecaireRepository.login;
 
@@ -25,7 +26,7 @@ public class BookController {
     public  void addBook(){
 
         Scanner myObj = new Scanner(System.in);
-        System.out.print("\u001B[32m");
+        System.out.print(GREEN);
         System.out.println("<=============== Add book ===============> \n");
         System.out.println("Enter ISBN:");
         if (myObj.hasNextInt()) {
@@ -42,25 +43,25 @@ public class BookController {
         }else System.out.println("Entre Just les Numbers No character !! ");
 
         String status = "disponible";
-        System.out.print("\u001B[0m");
+        System.out.print(RESET);
 
         Book book = new Book(ISBN, title, author, quantity, status);
 
         if (bookService.save(book)!= null) {
-            System.out.print("\u001B[34m");
+            System.out.print(BLEU);
             System.out.println("Book added successfully!");
-            System.out.print("\u001B[0m");
+            System.out.print(RESET);
         } else {
-            System.out.print("\u001B[31m");
+            System.out.print(RED);
             System.out.println("Error: Please try again.");
-            System.out.print("\u001B[0m");
+            System.out.print(RESET);
         }
     }
     public void showAll() {
-        System.out.print("\u001B[32m");
+        System.out.print(GREEN);
         System.out.println("<=============== ALL book ===============> \n");
 
-        System.out.print("\u001B[0m");
+        System.out.print(RESET);
         if(books!= null)books.clear();
         books =bookService.getAll() ;
         HeaderTable();
@@ -73,7 +74,7 @@ public class BookController {
 
     public  void showBook() throws SQLException {
         Scanner myObj = new Scanner(System.in);
-        System.out.print("\u001B[32m");
+        System.out.print(GREEN);
         System.out.println("<===============  Show book  ===============> \n");
         System.out.println("Enter ISBN :");
         int ISBN = myObj.nextInt();
@@ -82,9 +83,9 @@ public class BookController {
             HeaderTable();
             displayBookInfoInTable(book1);      }
         else {
-            System.out.print("\u001B[31m");
+            System.out.print(RED);
             System.out.println("Error: Book not found. Please try again.");
-            System.out.print("\u001B[0m");
+            System.out.print(RESET);
         }
     }
 
@@ -92,7 +93,7 @@ public class BookController {
         if(books!= null)books.clear();
 
         Scanner myObj = new Scanner(System.in);
-        System.out.print("\u001B[32m");
+        System.out.print(GREEN);
         System.out.println("<===============  Search Book use Title of book or Name of author ===============> \n");
         System.out.println("Enter le titre au bien nom  de le auteur : ");
         String searchCriteria = myObj.nextLine();
@@ -104,7 +105,7 @@ public class BookController {
     }
     public void deleteBook() throws SQLException {
         Scanner myObj = new Scanner(System.in);
-        System.out.print("\u001B[32m");
+        System.out.print(GREEN);
         System.out.println("<=============== Deleting book ===============> \n");
         System.out.println("Enter ISBN:");
         int ISBN = myObj.nextInt();
@@ -120,7 +121,7 @@ public class BookController {
 
     public void update() throws SQLException {
         Scanner myObj = new Scanner(System.in);
-        System.out.print("\u001B[32m");
+        System.out.print(GREEN);
         System.out.println("<=============== Updating book ===============> \n");
         System.out.println("Enter ISBN:");
         int ISBN = myObj.nextInt();
@@ -130,9 +131,9 @@ public class BookController {
             displayBookInfoInTable(book1);
         }
         else  {
-            System.out.print("\u001B[31m");
+            System.out.print(RED);
             System.out.println("Error: Book not found. Please try again.");
-            System.out.print("\u001B[0m");
+            System.out.print(RESET);
         }
         myObj.nextLine();
         System.out.println("Titre :");

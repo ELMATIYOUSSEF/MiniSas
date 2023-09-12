@@ -4,6 +4,7 @@ import controller.BookController;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import static console.TextColor.*;
 
 import static console.Menu.*;
 
@@ -14,7 +15,7 @@ public class BookManagement {
         int choice = 0;
 
         do {
-            System.out.print("\u001B[32m");
+            System.out.print(GREEN);
             clearScreen();
             printHeader();
             System.out.println("\tBook management : ");
@@ -29,9 +30,9 @@ public class BookManagement {
             while (!scanner.hasNextInt()) {
                 // Input is not an integer, clear the invalid input and prompt again
                 scanner.nextLine(); // Clear the input buffer
-                System.out.print("\u001B[31m");
+                System.out.print(RED);
                 System.out.println("\n Choix invalide. Veuillez réessayer.");
-                System.out.print("\u001B[32m");
+                System.out.print(GREEN);
                 System.out.print("\nVotre choix : ");
             }
 
@@ -65,9 +66,9 @@ public class BookManagement {
                         }
                         break;
                     default:
-                        System.out.print("\u001B[31m");
+                        System.out.print(RED);
                         System.out.println("\n Choix invalide. Veuillez réessayer.");
-                        System.out.print("\u001B[0m");
+                        System.out.print(RESET);
                 }
 
         } while (choice != 7);

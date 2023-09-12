@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import static console.BeneficiariesManagement.menuBeneficiaries;
+import static console.TextColor.*;
 import static console.BookManagement.menuBook;
 
 
@@ -22,8 +23,11 @@ public class Menu {
         System.out.print("\u001B[32m");
         clearScreen();
         printHeader();
-        System.out.println("\t<===============  Bonjour !! =================>");
+        System.out.println("+-----------------------------------------------------------------------------------------+");
+        System.out.println("+------------------------------------------------------------+");
+        System.out.println("\t\t|  +===============  Bonjour !! =================>\t |");
         System.out.println("\t S'il vous plaît, choisissez ce que vous voulez : \n");
+        System.out.println("+------------------------------------------------------------+");
         System.out.println("\t01 : Gestion des Livres.");
         System.out.println("\t02 : Gestion des Bénéficaires.");
         System.out.println("\t03 : Donne Le livre.");
@@ -31,12 +35,13 @@ public class Menu {
         System.out.println("\t05 : Changé le mode Passe .");
         System.out.println("\t06 : Les statistiques.");
         System.out.println("\t07 : Quitter l'application.");
-        System.out.print("\nVotre choix : ");
+        System.out.println("+-----------------------------------------------------------------------------------------+");
+        System.out.print("\n\t Votre choix : ");
         while (!scanner.hasNextInt()) {
             scanner.nextLine();
-            System.out.print("\u001B[31m");
+            System.out.print(RED);
             System.out.println("\n Choix invalide. Veuillez réessayer.");
-            System.out.print("\u001B[32m");
+            System.out.print(GREEN);
             System.out.print("\nVotre choix : ");
         }
 
@@ -74,9 +79,9 @@ public class Menu {
                     System.exit(0);
                     break;
                 default:
-                    System.out.print("\u001B[31m");
+                    System.out.print(GREEN);
                     System.out.println("\n Choix invalide. Veuillez réessayer.");
-                    System.out.print("\u001B[0m");
+                    System.out.print(RESET);
             }
 
     } while(true);

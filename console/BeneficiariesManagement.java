@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import static console.Menu.*;
+import static console.TextColor.*;
 
 public class BeneficiariesManagement {
     public static void menuBeneficiaries() throws SQLException {
@@ -16,7 +17,7 @@ public class BeneficiariesManagement {
 
 
         do {
-            System.out.print("\u001B[32m");
+            System.out.print(GREEN);
             clearScreen();
             printHeader();
             System.out.println("\t <=========== Beneficiaries management ===========> ");
@@ -26,9 +27,9 @@ public class BeneficiariesManagement {
             System.out.print("\nVotre choix : ");
             while (!scanner.hasNextInt()) {
                 scanner.nextLine();
-                System.out.print("\u001B[31m");
+                System.out.print(RED);
                 System.out.println("\n Choix invalide. Veuillez réessayer.");
-                System.out.print("\u001B[32m");
+                System.out.print(GREEN);
                 System.out.print("\nVotre choix : ");
             }
 
@@ -52,16 +53,16 @@ public class BeneficiariesManagement {
                         }
                         break;
                     default:
-                        System.out.print("\u001B[31m");
+                        System.out.print(RED);
                         System.out.println("\n Choix invalide. Veuillez réessayer.");
-                        System.out.print("\u001B[0m");
+                        System.out.print(RESET);
                 }
             }else {
                 // Clear the invalid input
                 scanner.nextLine();
-                System.out.print("\u001B[31m");
+                System.out.print(RED);
                 System.out.println("\n Choix invalide. Veuillez réessayer.");
-                System.out.print("\u001B[0m");
+                System.out.print(RESET);
             }
 
         } while( choice != 3);

@@ -6,8 +6,8 @@ public class Bibliothecaire extends Person {
     private  String password ;
 
 
-    public Bibliothecaire(String name, String Email , String password){
-        super( name );
+    public Bibliothecaire(int id ,String name, String Email , String password){
+        super( id,name );
         this.email = Email ;
         this.password = password ;
     }

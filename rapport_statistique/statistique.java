@@ -52,34 +52,6 @@ public class statistique {
      static String Name ="Rapport"+date.getTime()+".pdf";
     static String path = "C:\\Users\\YouCode\\Desktop\\rapportStatistique\\"+Name;
 
-    public static void CreatepdfFile()  {
-
-
-        try {
-            // Create a PdfWriter instance to write the PDF file
-            PdfWriter pdfWriter = new PdfWriter(path);
-
-            // Create a PdfDocument instance
-            PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-
-            // Create a Document instance to work with the PDF
-            Document document = new Document(pdfDocument);
-
-            // Add content to the PDF document
-            document.add(new Paragraph("Rapport de Statistiques"));
-            document.add(new Paragraph("Statistique 1 : 100"));
-            document.add(new Paragraph("Statistique 2 : 200"));
-            document.add(new Paragraph("Statistique 3 : 300"));
-
-            // Close the document to save and finalize it
-            document.close();
-
-            System.out.println("Rapport de statistiques généré avec succès : " + path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public  void showAll(){
         List<Borrow> borrows = new ArrayList<>() ;
         borrows = borrowService.getALL();
@@ -99,11 +71,17 @@ public class statistique {
             paragraph.setFontColor(textColor);
 
             paragraph.setTextAlignment(TextAlignment.CENTER);
+            //numbers book in Library
+            int count =countBook() ;
+            Paragraph Books = new Paragraph("numbers book in Library : "+count);
+            Color textColorTitre = new DeviceRgb(0,128,0);
+            Books.setFontColor(textColorTitre);
 
             document.add(paragraph);
+            document.add(Books);
             Paragraph Titre = new Paragraph("Show All Borrowed action : ");
-            Color textColorTitre = new DeviceRgb(0,128,0);
-            Titre.setFontColor(textColorTitre);
+            Color textColorbooks = new DeviceRgb(0,128,0);
+            Titre.setFontColor(textColorbooks);
             document.add(Titre);
             // Create a table with 7 columns for the borrowed books' information
             Table table = new Table(7);
@@ -150,6 +128,7 @@ public class statistique {
 
             }
 
+
             // Add the table to the PDF document
             document.add(table);
 
@@ -162,6 +141,14 @@ public class statistique {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public int countBook(){
+        int count =0 ;
+        List<Book> books = bookService.getAll();
+        for(Book book : books){
+            count++;
+        }
+        return count ;
     }
 
     public static void getNemBookDisponible(Document document) throws FileNotFoundException {
@@ -236,11 +223,7 @@ public class statistique {
 
                 switch (choice) {
                     case 1:
-                        int count =0 ;
-                       List<Book> books = bookService.getAll();
-                       for(Book book : books){
-                           count++;
-                       }
+                        int count =countBook() ;
                         System.out.println("Numbre of books in this library : " + count);
                         break;
                     case 2:

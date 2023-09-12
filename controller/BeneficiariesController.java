@@ -3,6 +3,7 @@ package controller;
 import model.Beneficiaries;
 import model.Book;
 import service.BeneficiariesService;
+import static console.TextColor.*;
 
 import java.util.List;
 import java.util.Scanner;
@@ -13,7 +14,7 @@ public class BeneficiariesController {
     List<Beneficiaries> List_beneficiaries ;
     public void addBeneficiaries(){
         Scanner myObj = new Scanner(System.in);
-        System.out.print("\u001B[32m");
+        System.out.print(GREEN);
         System.out.println("<=============== Add Beneficiaries ===============> \n");
         System.out.println("Enter le Nom : ");
         String Nom = myObj.nextLine();
@@ -22,20 +23,20 @@ public class BeneficiariesController {
          ben = new Beneficiaries(Nom,Phone);
 
         if (beneficiariesService.createBeneficiaryService(ben)!= null) {
-            System.out.print("\u001B[34m");
+            System.out.print(BLEU);
             System.out.println("Beneficiaries added successfully!");
-            System.out.print("\u001B[0m");
+            System.out.print(RESET);
         } else {
-            System.out.print("\u001B[31m");
+            System.out.print(RED);
             System.out.println("Error: Please try again.");
-            System.out.print("\u001B[0m");
+            System.out.print(RESET);
         }
     }
     public void showAll(){
-        System.out.print("\u001B[32m");
+        System.out.print(GREEN);
         System.out.println("<=============== ALL book ===============> \n");
 
-        System.out.print("\u001B[0m");
+        System.out.print(RESET);
         if(List_beneficiaries!= null)List_beneficiaries.clear();
        List_beneficiaries = beneficiariesService.showAllBeneficiariesService();
         HeaderTable();
